@@ -99,7 +99,7 @@ function DayModal(props) {
 DayModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  selectedValue: PropTypes.string.isRequired,
-};
+/*   selectedValue: PropTypes.string.isRequired,
+ */};
 
 export default DayModal;

@@ -65,4 +65,10 @@ const calendarHeader = ({ props }) => {
     </Container>
   );
 };
+
+calendarHeader.propTypes = {
+  currentMonth: PropTypes.string.isRequired,
+  prevMonth: PropTypes.func.isRequired,
+  nextMonth: PropTypes.func.isRequired,
+};
 export default calendarHeader;

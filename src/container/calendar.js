@@ -1,7 +1,7 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import * as dateFns from "date-fns";
 import CalendarHeader from "../components/calendarHeader";
-import { Container, Typography, TableCell, TableRow } from "@material-ui/core";
+import { Container,  TableRow } from "@material-ui/core";
 import "./../App.css";
 import DayModal from "../components/dayModal";
 import DayCell from "../components/dayCell";
@@ -14,7 +14,12 @@ export default class calendar extends Component {
       selectedDate: new Date(),
       open: false,
       selectedValue: "",
-      reminders: {}
+      reminders: [{
+        start: '2019-09-30 01:30:00',
+        end: '2019-09-30 02:20:00',
+        title: 'My Birthday Party',
+        city: 'Lets Enjoy',
+        color: "Yellow"}]
     };
   }
 
@@ -45,9 +50,21 @@ export default class calendar extends Component {
   };
 
   handleClose = value => {
-    this.setState({ open: false, selectedDate: value });
+    this.setState({ open: false, selectedValue: value });
   };
 
+  todayReminders = day => {
+     const reminders = this.state.reminders;
+     console.log("start", reminders.startDate)
+     console.log("day", day)
+
+    let todayReminders = reminders.filter((rem) =>
+      dateFns
+        .isSameDay(rem.startDate, day)
+    ).sort((a, b) => b.startDate - a.startDate);
+    console.log("adasdasdas", todayReminders)
+    return todayReminders;
+  };
   rendergrid = () => {
     const { currentMonth } = this.state;
     const monthStart = dateFns.startOfMonth(currentMonth);
@@ -55,25 +72,19 @@ export default class calendar extends Component {
     const startDate = dateFns.startOfWeek(monthStart);
     const endDate = dateFns.endOfWeek(monthEnd);
 
-    const dateFormat = "d";
     const rows = [];
     let days = [];
     let day = startDate;
-    let formattedDate = "";
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
-        formattedDate = dateFns.format(day, dateFormat);
-        const cloneDay = day;
         days.push(
           <DayCell
             props={{
-              onClick: this.onDateClick(
-                dateFns.parse(cloneDay, "d/mm/yyyy", dateFormat)
-              ),
+              onDateClick: this.onDateClick,
               day: day,
               weather: "SOLEADO",
-              events: null,
+              reminders: this.todayReminders(day),
               monthStart: monthStart
             }}
           />
