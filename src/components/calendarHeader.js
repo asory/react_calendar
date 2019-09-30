@@ -9,7 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { Divider, Container } from "@material-ui/core";
 
 const calendarHeader = ({ props }) => {
-  const weekdays = [
+  const weekdays =  [
     "Sunday",
     "Monday",
     "Tuesday",
@@ -32,7 +32,7 @@ const calendarHeader = ({ props }) => {
 
   return (
     <Container style={{ flexGrow: 1 }}>
-      <AppBar position="static" color="default">
+      <AppBar position="static" style={{backgroundColor:"#2f74b5"}}>
         <Toolbar style={{ alignItems: "center", justifyContent: "center" }}>
           <IconButton
             edge="start"
@@ -43,7 +43,7 @@ const calendarHeader = ({ props }) => {
             <Before />
           </IconButton>
 
-          <Typography variant="h2" color="primary">
+          <Typography variant="h2" color="default">
             {props.currentMonth}
           </Typography>
 
