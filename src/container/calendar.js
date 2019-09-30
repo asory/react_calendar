@@ -58,7 +58,7 @@ export default class calendar extends Component {
         formattedDate = dateFns.format(day, dateFormat);
         const cloneDay = day;
         days.push(
-          <TableCell
+          <TableCell style={{border: '1px solid black', maxWidth: "14.3%", width: "200px" , height:"100px"}}
             className={`col cell ${
               !dateFns.isSameMonth(day, monthStart)
                 ? "disabled"
@@ -67,8 +67,8 @@ export default class calendar extends Component {
                 : ""
             }`}
             key={day}
-/*             onClick={() => this.onDateClick(dateFns.parse(cloneDay))}
- */          >
+           /*  onClick={() => this.onDateClick(dateFns.parse(cloneDay))} */
+           >
              <span className="number">{formattedDate}</span>
 {/*              <span className="bg">{formattedDate}</span>
  */}       </TableCell>
@@ -95,7 +95,7 @@ export default class calendar extends Component {
             prevMonth: this.prevMonth
           }}
         />
-            {this.rendergrid()} 
+           <Container>{this.rendergrid()}    </Container> 
        {/*  <DaysGrid
           props={{
             currentMonth: format(this.state.currentMonth, "MMMM"),
