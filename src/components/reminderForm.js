@@ -25,20 +25,24 @@ export default class reminderForm extends Component {
     };
 
   }
+  componentDidMount() {
+    this.setState({reminders: this.props.reminders});
+  }
 
   getWeather = (city) => {
+    let weather = "";
     const ApiKey = "469d1adb2769408051227ecab599bde7";
-    const url = `api.openweathermap.org/data/2.5/weather?q=${city}`;
+    const url = `api.openweathermap.org/data/2.5/weather?`;
     axios
       .get(url, {
-        appid: ApiKey,
+        "q":city,
+        "appid": ApiKey,
       })
       .then(response => {
         console.log("response",response)
 
         this.setState({
-          weather: response.data.main.description,
-          isLoading: false
+          reminders:  response.data.main.description,
         });
       })
       .catch(err => {
@@ -48,7 +52,7 @@ export default class reminderForm extends Component {
           error: true
         });
       });
-    console.log()
+    console.log( this.state.weather)
   };
 
   getflag = (country, style = "shiny", size = 24) => {
@@ -71,9 +75,7 @@ export default class reminderForm extends Component {
     return flag;
   };
 
-  componentDidMount() {
-    this.setState({reminders: this.props.reminders});
-  }
+ 
   render() {
     return (
       <MaterialTable
@@ -125,8 +127,7 @@ export default class reminderForm extends Component {
           }
         ]}
         editable={{
-          /*  onRowAdd: newData => {
-            console.log("STAS", newData);
+          onRowAdd: newData => {
             new Promise(resolve => {
               setTimeout(() => {
                 resolve();
@@ -136,7 +137,7 @@ export default class reminderForm extends Component {
               }, 600);
             });
           },
-          */ onRowUpdate: (
+           onRowUpdate: (
             newData,
             oldData
           ) =>
