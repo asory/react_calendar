@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import * as dateFns from "date-fns";
 import CalendarHeader from "../components/calendarHeader";
-import { Container,  TableRow } from "@material-ui/core";
+import { Container, TableRow, TableBody } from "@material-ui/core";
 import "./../App.css";
-import DayModal from "../components/dayModal";
 import DayCell from "../components/dayCell";
+import ReminderForm from "../components/reminderForm";
 
 export default class calendar extends Component {
   constructor(props) {
@@ -14,12 +14,22 @@ export default class calendar extends Component {
       selectedDate: new Date(),
       open: false,
       selectedValue: "",
-      reminders: [{
-        start: '2019-09-30 01:30:00',
-        end: '2019-09-30 02:20:00',
-        title: 'My Birthday Party',
-        city: 'Lets Enjoy',
-        color: "Yellow"}]
+      reminders: [
+        {
+          start: "2019-09-30 01:30:00",
+          end: "2019-09-30 02:20:00",
+          title: "My Birthday Party",
+          city: "Lets Enjoy",
+          color: "Yellow"
+        },
+        {
+          start: "2019-09-30 01:30:00",
+          end: "2019-09-30 02:20:00",
+          title: "My Birthday Party",
+          city: "Lets Enjoy",
+          color: "Yellow"
+        }
+      ]
     };
   }
 
@@ -40,31 +50,36 @@ export default class calendar extends Component {
       currentMonth: dateFns.subMonths(this.state.currentMonth, 1)
     });
   };
+  
+  getWeather = city => {
+    
+  };
 
-  getWeather = () => {};
-
-  addReminder = () => {};
 
   handleClickOpen = () => {
     this.setState({ open: true });
   };
 
   handleClose = value => {
-    this.setState({ open: false, selectedValue: value });
+    this.setState({ open: false, selectedValue: value }, newState =>
+      console.log(newState)
+    );
   };
 
   todayReminders = day => {
-     const reminders = this.state.reminders;
-     console.log("start", reminders.startDate)
-     console.log("day", day)
+    const reminders = this.state.reminders;
+   /*  console.log("reminders", reminders);
+    console.log("day", day); */
 
-    let todayReminders = reminders.filter((rem) =>
-      dateFns
-        .isSameDay(rem.startDate, day)
-    ).sort((a, b) => b.startDate - a.startDate);
-    console.log("adasdasdas", todayReminders)
+    let todayReminders = reminders.filter(rem =>
+      dateFns.isSameDay(dateFns.parseISO(rem.start), dateFns.parseISO(day))
+    );
+    /* .sort((a, b) => b.startDate - a.startDate);
+     */
+    console.log("todayReminders", todayReminders);
     return todayReminders;
   };
+
   rendergrid = () => {
     const { currentMonth } = this.state;
     const monthStart = dateFns.startOfMonth(currentMonth);
@@ -91,11 +106,7 @@ export default class calendar extends Component {
         );
         day = dateFns.addDays(day, 1);
       }
-      rows.push(
-        <TableRow style={{ flexGrow: 1 }} key={day}>
-          {days}
-        </TableRow>
-      );
+      rows.push(<TableRow key={day}>{days}</TableRow>);
       days = [];
     }
     return rows;
@@ -103,7 +114,7 @@ export default class calendar extends Component {
 
   render() {
     return (
-      <Container>
+      <Container style={{ width: "max-content" }}>
         <CalendarHeader
           props={{
             currentMonth: dateFns.format(this.state.currentMonth, "MMMM yyyy"),
@@ -111,13 +122,12 @@ export default class calendar extends Component {
             prevMonth: this.prevMonth
           }}
         />
-        <Container>{this.rendergrid()}</Container>
+        <Container style={{ width: "fit-content" }}>
+          <TableBody style={{ flexGrow: 1 }}>{this.rendergrid()}</TableBody>
+          <ReminderForm />
 
-        <DayModal
-          selectedValue={this.state.selectedDate}
-          open={this.state.open}
-          onClose={this.handleClose}
-        />
+        </Container>
+        
       </Container>
     );
   }

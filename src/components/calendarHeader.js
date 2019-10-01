@@ -31,7 +31,7 @@ const calendarHeader = ({ props }) => {
   });
 
   return (
-    <Container style={{ flexGrow: 1 }}>
+    <Container style={{width:"fit-content"}}>
       <AppBar position="static" style={{backgroundColor:"#2f74b5"}}>
         <Toolbar style={{ alignItems: "center", justifyContent: "center" }}>
           <IconButton
@@ -69,6 +69,6 @@ const calendarHeader = ({ props }) => {
 calendarHeader.propTypes = {
   currentMonth: PropTypes.string.isRequired,
   prevMonth: PropTypes.func.isRequired,
-  nextMonth: PropTypes.func.isRequired,
+  nextMonth: PropTypes.func.isRequired ,
 };
 export default calendarHeader;

@@ -1,8 +1,10 @@
 import React from "react";
-import { isWeekend, isSameMonth, format, parse } from "date-fns";
+import { isWeekend, isSameMonth, format } from "date-fns";
 import { TableCell, Typography, ListItem } from "@material-ui/core";
-
-const dayCell = ({ props }) => (
+/* console.log("backgroud", `${isWeekend(props.day) ? "#ffffff" : "#f2f2f2"}`)
+ */
+const dayCell = ({ props }
+) => (
   <TableCell
     style={{
       verticalAlign: "top",
@@ -10,11 +12,11 @@ const dayCell = ({ props }) => (
       maxWidth: "14.3%",
       width: "200px",
       height: "140px",
-      backgroundColor: `${isWeekend(props.day) ? "#f2f2f2" : "#ffffff"}`
+      backgroundColor: `${isWeekend(props.day) ?  "#f2f2f2": "#ffffff" }`
     }}
     key={props.day}
-    /*     onClick={(props.onDateClick(parse(props.day, "d/mm/yyyy", "d" )))}
-     */
+        onClick={props.onDateClick}
+     
   >
     <span
       style={{
@@ -29,10 +31,10 @@ const dayCell = ({ props }) => (
       }}
     >
       {" "}
-      {`${format(props.day, "d")} ${props.weather}`}
+      {`${format(props.day, "d")} `}
     </span>
 
-    {props.reminders !== null}{" "}
+    {props.reminders != null}{" "}
     {props.reminders.map(e => {
       return (
         <ListItem>
