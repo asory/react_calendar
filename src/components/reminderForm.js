@@ -15,76 +15,29 @@ const tableIcons = {
   Clear: () => <Clear />
 };
 
-const reminders = [
-  {
-    start: "2019-09-01 00:00:00",
-    end: "2019-09-01 02:00:00",
-    title: "New Year Party",
-    city: "Santiago,Chile",
-    text: "Call to every one",
-    color: "#FF5722",
-    weather: {}
-  },
-  {
-    start: "2019-09-16 01:00:00",
-    end: "2019-09-16 02:00:00",
-    title: "New Year Wishes",
-    city: " Santiago,Chile",
-    text: "Call to every one",
-    color: "#FFEB3B",
-    weather: {}
-  },
-  {
-    start: "2019-10-02 00:30:00",
-    end: "2019-10-02 01:30:00",
-    title: "Parag Birthday Party",
-    city: " Barquisimeto,Venezuela ",
-    text: "Call him",
-    color: "#03A9F4",
-    weather: {}
-  },
-  {
-    start: "2019-10-02 01:30:00",
-    end: "2019-10-02 02:20:00",
-    title: "My Birthday Party",
-    city: "Merida,Venezuela",
-    text: " Bring your gifts ",
-    color: "#F44336",
-    weather: {}
-  },
-  {
-    start: "2019-10-09 04:10:00",
-    end: "2019-10-09 04:40:00",
-    title: "Expo 2019",
-    city: "Tokyo,Japan",
-    text: " ANIME RULES ",
-    color: "03A9F4",
-    weather: {}
-  }
-];
 
 export default class reminderForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      reminders: reminders,
-      isLoading: true,
-      error: false,
-      weather: {}
+      reminders:{}
+     
     };
+
   }
 
-  loadData = () => {
+  getWeather = (city) => {
     const ApiKey = "469d1adb2769408051227ecab599bde7";
-    const url = "api.openweathermap.org/data/2.5/forecast?";
+    const url = `api.openweathermap.org/data/2.5/weather?q=${city}`;
     axios
       .get(url, {
-        units: "metric",
-        APPID: ApiKey
+        appid: ApiKey,
       })
       .then(response => {
+        console.log("response",response)
+
         this.setState({
-          weather: response.data.main,
+          weather: response.data.main.description,
           isLoading: false
         });
       })
@@ -95,14 +48,15 @@ export default class reminderForm extends Component {
           error: true
         });
       });
+    console.log()
   };
 
   getflag = (country, style = "shiny", size = 24) => {
     // styles flat and shiny, sizez 64 48 32 24 16
     let flag;
     axios
-      .get(`https://www.countryflags.io/${country}/${style}/${size}.png`, {
-        header: {
+      .get(`https://www.countryflags.io/${country}/${style}/${size}.png`, {         
+      header: {
           "Access-Control-Allow-Origin": "*",
           crossorigin: true
         }
@@ -118,9 +72,8 @@ export default class reminderForm extends Component {
   };
 
   componentDidMount() {
-    this.loadData();
+    this.setState({reminders: this.props.reminders});
   }
-
   render() {
     return (
       <MaterialTable
@@ -128,6 +81,7 @@ export default class reminderForm extends Component {
         title={`${"    Reminders         "}`}
         columns={[
           { title: "Title", field: "title", sorting: false },
+          { title: "Description", field: "text", sorting: false },
           {
             title: "Start",
             field: "start",
@@ -144,7 +98,7 @@ export default class reminderForm extends Component {
             title: "City",
             field: "city",
             render: rowData =>
-              ` ${this.getflag(rowData.city.split(",")[1])} ${
+              /*  ${this.getflag(rowData.city.split(",")[1])} */ `${
                 rowData.city.split(",")[0]
               } `
           },
@@ -154,9 +108,8 @@ export default class reminderForm extends Component {
             sorting: false,
 
             render: rowData =>
-              `${rowData.weather.main} ${rowData.weather.description} `
+              `${this.getWeather(rowData.city.split(",")[0])} ${rowData.weather.description} `
           },
-          { title: "Description", field: "text", sorting: false },
           {
             title: "Color",
             field: "color",
@@ -213,21 +166,19 @@ export default class reminderForm extends Component {
           rowStyle: rowData => ({
             backgroundColor: `${rowData.color}`,
             color: "#ffffff"
-          })
+          }),
+          headerStyle: {
+            backgroundColor: '#2f74b5',
+            color: '#FFF'
+          }, 
+          titleStyle: {
+            alignContent: 'center',
+            backgroundColor: '#2f74b5',
+            color: '#FFF'
 
-          /*           selection: true
-           */
-        }}
-        /* actions={[
-          { 
-            rowStyle: rowData => ({
-              backgroundColor: rowData.color
-            }),
-            tooltip: 'Remove All Selected Users',
-            icon: 'delete',
-            onClick: ({ editable }, data) => alert('You want to delete ' + data.length + ' rows')
           }
-        ]} */
+        }}
+     
       ></MaterialTable>
     );
   }

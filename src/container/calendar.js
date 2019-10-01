@@ -5,6 +5,53 @@ import { Container, TableRow, TableBody } from "@material-ui/core";
 import "./../App.css";
 import DayCell from "../components/dayCell";
 import ReminderForm from "../components/reminderForm";
+const reminders = [
+  {
+    start: "2019-09-01 00:00:00",
+    end: "2019-09-01 02:00:00",
+    title: "New Year Party",
+    city: "Santiago,Chile",
+    text: "Call to every one",
+    color: "#FF5722",
+    weather: {}
+  },
+  {
+    start: "2019-09-16 01:00:00",
+    end: "2019-09-16 02:00:00",
+    title: "New Year Wishes",
+    city: " Santiago,Chile",
+    text: "Call to every one",
+    color: "#FFEB3B",
+    weather: {}
+  },
+  {
+    start: "2019-10-02 00:30:00",
+    end: "2019-10-02 01:30:00",
+    title: "Parag Birthday Party",
+    city: " Barquisimeto,Venezuela ",
+    text: "Call him",
+    color: "#03A9F4",
+    weather: {}
+  },
+  {
+    start: "2019-10-02 01:30:00",
+    end: "2019-10-02 02:20:00",
+    title: "My Birthday Party",
+    city: "Merida,Venezuela",
+    text: " Bring your gifts ",
+    color: "#F44336",
+    weather: {}
+  },
+  {
+    start: "2019-10-09 04:10:00",
+    end: "2019-10-09 04:40:00",
+    title: "Expo 2019",
+    city: "Tokyo,Japan",
+    text: " ANIME RULES ",
+    color: "03A9F4",
+    weather: {}
+  }
+];
 
 export default class calendar extends Component {
   constructor(props) {
@@ -13,33 +60,9 @@ export default class calendar extends Component {
       currentMonth: new Date(),
       selectedDate: new Date(),
       open: false,
-      selectedValue: "",
-      reminders: [
-        {
-          start: "2019-09-30 01:30:00",
-          end: "2019-09-30 02:20:00",
-          title: "My Birthday Party",
-          city: "Lets Enjoy",
-          color: "Yellow"
-        },
-        {
-          start: "2019-09-30 01:30:00",
-          end: "2019-09-30 02:20:00",
-          title: "My Birthday Party",
-          city: "Lets Enjoy",
-          color: "Yellow"
-        }
-      ]
+      reminders:reminders
     };
   }
-
-  onDateClick = day => {
-    this.handleClickOpen();
-    this.setState({
-      selectedDate: day
-    });
-  };
-
   nextMonth = () => {
     this.setState({
       currentMonth: dateFns.addMonths(this.state.currentMonth, 1)
@@ -51,32 +74,13 @@ export default class calendar extends Component {
     });
   };
   
-  getWeather = city => {
-    
-  };
-
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = value => {
-    this.setState({ open: false, selectedValue: value }, newState =>
-      console.log(newState)
-    );
-  };
 
   todayReminders = day => {
     const reminders = this.state.reminders;
-   /*  console.log("reminders", reminders);
-    console.log("day", day); */
-
     let todayReminders = reminders.filter(rem =>
       dateFns.isSameDay(dateFns.parseISO(rem.start), dateFns.parseISO(day))
     );
-    /* .sort((a, b) => b.startDate - a.startDate);
-     */
-    console.log("todayReminders", todayReminders);
+  
     return todayReminders;
   };
 
@@ -124,7 +128,7 @@ export default class calendar extends Component {
         />
         <Container style={{ width: "fit-content" }}>
           <TableBody style={{ flexGrow: 1 }}>{this.rendergrid()}</TableBody>
-          <ReminderForm />
+          <ReminderForm reminders={this.state.reminders } />
 
         </Container>
         

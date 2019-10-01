@@ -30,7 +30,7 @@ const dayCell = ({ props }) => (
       {" "}
       {`${format(props.day, "d")} `}
     </span>
-    <h4 style={{ alignSelf:"flexEnd" , color:"blue"}}> {props.reminders}</h4>
+    <h4 style={{ alignSelf: "flexEnd", color: "blue" }}> {( props.reminders  > 0) ? props.reminders  : " "}</h4>
 
   </TableCell>
   
