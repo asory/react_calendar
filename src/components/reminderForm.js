@@ -26,7 +26,7 @@ export default class reminderForm extends Component {
 
   }
   componentDidMount() {
-    this.setState({reminders: this.props.reminders});
+    this.setState({ reminders: this.props.reminders });
   }
 
   getWeather = (city) => {
@@ -41,18 +41,13 @@ export default class reminderForm extends Component {
       .then(response => {
         console.log("response",response)
 
-        this.setState({
-          reminders:  response.data.main.description,
-        });
+        weather = response;
       })
       .catch(err => {
         console.log(err);
-        this.setState({
-          isLoading: false,
-          error: true
-        });
       });
-    console.log( this.state.weather)
+    console.log(weather);
+    return weather;
   };
 
   getflag = (country, style = "shiny", size = 24) => {
@@ -110,7 +105,7 @@ export default class reminderForm extends Component {
             sorting: false,
 
             render: rowData =>
-              `${this.getWeather(rowData.city.split(",")[0])} ${rowData.weather.description} `
+              `${rowData.weather.main} ${rowData.weather.description} `
           },
           {
             title: "Color",
