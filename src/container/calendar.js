@@ -99,7 +99,7 @@ export default class calendar extends Component {
               onDateClick: this.onDateClick,
               day: day,
               weather: "SOLEADO",
-              reminders: this.todayReminders(day),
+              reminders: this.todayReminders(day).length,
               monthStart: monthStart
             }}
           />

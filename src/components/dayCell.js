@@ -1,10 +1,8 @@
 import React from "react";
 import { isWeekend, isSameMonth, format } from "date-fns";
-import { TableCell, Typography, ListItem } from "@material-ui/core";
-/* console.log("backgroud", `${isWeekend(props.day) ? "#ffffff" : "#f2f2f2"}`)
- */
-const dayCell = ({ props }
-) => (
+import { TableCell } from "@material-ui/core";
+
+const dayCell = ({ props }) => (
   <TableCell
     style={{
       verticalAlign: "top",
@@ -12,11 +10,10 @@ const dayCell = ({ props }
       maxWidth: "14.3%",
       width: "200px",
       height: "140px",
-      backgroundColor: `${isWeekend(props.day) ?  "#f2f2f2": "#ffffff" }`
+      backgroundColor: `${isWeekend(props.day) ? "#f2f2f2" : "#ffffff"}`
     }}
     key={props.day}
-        onClick={props.onDateClick}
-     
+    onClick={props.onDateClick}
   >
     <span
       style={{
@@ -33,20 +30,10 @@ const dayCell = ({ props }
       {" "}
       {`${format(props.day, "d")} `}
     </span>
+    <h4 style={{ alignSelf:"flexEnd" , color:"blue"}}> {props.reminders}</h4>
 
-    {props.reminders != null}{" "}
-    {props.reminders.map(e => {
-      return (
-        <ListItem>
-          <Typography>
-            {e.start}-{e.end}`
-          </Typography>
-          <Typography>{e.title}</Typography>
-        </ListItem>
-      );
-    })}
-    <span>AVALAIBLE</span>
   </TableCell>
+  
 );
 
 export default dayCell;

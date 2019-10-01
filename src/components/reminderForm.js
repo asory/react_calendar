@@ -6,7 +6,6 @@ import Clear from "@material-ui/icons/Clear";
 import FilterList from "@material-ui/icons/FilterList";
 import Search from "@material-ui/icons/Search";
 import { format } from "date-fns";
-import { parseISO, lightFormat } from "date-fns/esm";
 
 const tableIcons = {
   Filter: () => <FilterList />,
@@ -23,7 +22,7 @@ const reminders = [
     title: "New Year Party",
     city: "Santiago,Chile",
     text: "Call to every one",
-    color: "Orange",
+    color: "#FF5722",
     weather: {}
   },
   {
@@ -32,7 +31,7 @@ const reminders = [
     title: "New Year Wishes",
     city: " Santiago,Chile",
     text: "Call to every one",
-    color: "Blue",
+    color: "#FFEB3B",
     weather: {}
   },
   {
@@ -41,7 +40,7 @@ const reminders = [
     title: "Parag Birthday Party",
     city: " Barquisimeto,Venezuela ",
     text: "Call him",
-    color: "Yellow",
+    color: "#03A9F4",
     weather: {}
   },
   {
@@ -50,7 +49,7 @@ const reminders = [
     title: "My Birthday Party",
     city: "Merida,Venezuela",
     text: " Bring your gifts ",
-    color: "red",
+    color: "#F44336",
     weather: {}
   },
   {
@@ -59,7 +58,7 @@ const reminders = [
     title: "Expo 2019",
     city: "Tokyo,Japan",
     text: " ANIME RULES ",
-    color: "Yellow",
+    color: "03A9F4",
     weather: {}
   }
 ];
@@ -119,8 +118,7 @@ export default class reminderForm extends Component {
   };
 
   componentDidMount() {
-    /*     this.loadData();
-     */
+    this.loadData();
   }
 
   render() {
@@ -155,7 +153,8 @@ export default class reminderForm extends Component {
             field: "weather",
             sorting: false,
 
-            render: rowData => `${rowData.weather.main} ${rowData.weather.description} `
+            render: rowData =>
+              `${rowData.weather.main} ${rowData.weather.description} `
           },
           { title: "Description", field: "text", sorting: false },
           {
@@ -163,16 +162,17 @@ export default class reminderForm extends Component {
             field: "color",
             sorting: false,
             lookup: {
-              blue: "Blue",
-              yellow: "Yellow",
-              red: "Red",
-              green: "Green",
-              orange: "Orange"
+              "#03A9F4": "blue",
+              "#FFEB3B": "yellow",
+              "#F44336": "red",
+              "#8BC34A": "green",
+              "#FF7043": "orange",
+              "#ffffff": "white"
             }
           }
         ]}
         editable={{
-         /*  onRowAdd: newData => {
+          /*  onRowAdd: newData => {
             console.log("STAS", newData);
             new Promise(resolve => {
               setTimeout(() => {
@@ -183,7 +183,10 @@ export default class reminderForm extends Component {
               }, 600);
             });
           },
-          */ onRowUpdate: (newData, oldData) =>
+          */ onRowUpdate: (
+            newData,
+            oldData
+          ) =>
             new Promise(resolve => {
               setTimeout(() => {
                 resolve();
@@ -206,7 +209,12 @@ export default class reminderForm extends Component {
         options={{
           paging: false,
           draggable: false,
-          search: false
+          search: false,
+          rowStyle: rowData => ({
+            backgroundColor: `${rowData.color}`,
+            color: "#ffffff"
+          })
+
           /*           selection: true
            */
         }}
