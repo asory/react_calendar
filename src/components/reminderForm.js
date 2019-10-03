@@ -32,7 +32,7 @@ export default class reminderForm extends Component {
   getWeather = (city) => {
     let weather = "";
     const ApiKey = "469d1adb2769408051227ecab599bde7";
-    const url = `api.openweathermap.org/data/2.5/weather?`;
+    const url = "api.openweathermap.org/data/2.5/weather?";
     axios
       .get(url, {
         "q":city,
