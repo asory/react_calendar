@@ -1,15 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Before from "@material-ui/icons/NavigateBefore";
 import Next from "@material-ui/icons/NavigateNext";
 import IconButton from "@material-ui/core/IconButton";
-import { Divider, Container } from "@material-ui/core";
+import { Divider, Container, Table } from "@material-ui/core";
 
 const calendarHeader = ({ props }) => {
-  const weekdays =  [
+  const weekdays = [
     "Sunday",
     "Monday",
     "Tuesday",
@@ -21,7 +20,6 @@ const calendarHeader = ({ props }) => {
   const dayHeader = weekdays.map(day => {
     return (
       <th
-        item
         key={day}
         style={{ color: "#ffffff", maxWidth: "14.3%", width: "200px" }}
       >
@@ -31,8 +29,8 @@ const calendarHeader = ({ props }) => {
   });
 
   return (
-    <Container style={{width:"fit-content"}}>
-      <AppBar position="static" style={{backgroundColor:"#2f74b5"}}>
+    <Container style={{ width: "fit-content" }}>
+      <AppBar position="static" style={{ backgroundColor: "#2f74b5" }}>
         <Toolbar style={{ alignItems: "center", justifyContent: "center" }}>
           <IconButton
             edge="start"
@@ -43,7 +41,7 @@ const calendarHeader = ({ props }) => {
             <Before />
           </IconButton>
 
-          <Typography variant="h2" color="default">
+          <Typography variant="h2" color="initial">
             {props.currentMonth}
           </Typography>
 
@@ -58,17 +56,13 @@ const calendarHeader = ({ props }) => {
           <Divider />
         </Toolbar>
       </AppBar>
-      <div style={{ backgroundColor: "#2F73B9", flexGrow: 1 }}>
-        {" "}
-        {dayHeader}{" "}
-      </div>
+      <Table style={{ backgroundColor: "#2F73B9", flexGrow: 1 }}>
+        <thead>
+          <tr>{dayHeader}</tr>
+        </thead>
+      </Table>
     </Container>
   );
 };
 
-calendarHeader.propTypes = {
-  currentMonth: PropTypes.string.isRequired,
-  prevMonth: PropTypes.func.isRequired,
-  nextMonth: PropTypes.func.isRequired ,
-};
 export default calendarHeader;

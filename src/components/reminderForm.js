@@ -15,31 +15,53 @@ const tableIcons = {
   Clear: () => <Clear />
 };
 
-
 export default class reminderForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      reminders:{}
-     
+      reminders: []
     };
-
   }
+
+  CancelToken = axios.CancelToken;
+  source = this.CancelToken.source();
+  abortController = new AbortController();
+
   componentDidMount() {
     this.setState({ reminders: this.props.reminders });
+    /*     this.loadData();
+     */
+  }
+ /* 
+  componentWillUnmount() {
+    this.source.cancel("Operation canceled by the user.");
   }
 
-  getWeather = (city) => {
+ 
+  loadData = () => {
+    this.props.reminders.map(e => {
+      let weather = this.getWeather(e.city);
+      this.setState({ reminders: weather });
+      return console.log("loadata", e.city);
+    });
+  }; */
+
+  /* getWeather = city => {
+    let c = `${city.split(",")[0]}`;
     let weather = "";
-    const ApiKey = "469d1adb2769408051227ecab599bde7";
-    const url = `api.openweathermap.org/data/2.5/weather?`;
+    console.log(c);
     axios
-      .get(url, {
-        "q":city,
-        "appid": ApiKey,
+      .get("api.openweathermap.org/data/2.5/weather", {
+        q: c,
+        appid: "469d1adb2769408051227ecab599bde7",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        },{
+        cancelToken: this.source.token
+      }
       })
       .then(response => {
-        console.log("response",response)
+        console.log("response", response);
 
         weather = response;
       })
@@ -54,8 +76,8 @@ export default class reminderForm extends Component {
     // styles flat and shiny, sizez 64 48 32 24 16
     let flag;
     axios
-      .get(`https://www.countryflags.io/${country}/${style}/${size}.png`, {         
-      header: {
+      .get(`https://www.countryflags.io/${country}/${style}/${size}.png`, {
+        header: {
           "Access-Control-Allow-Origin": "*",
           crossorigin: true
         }
@@ -68,9 +90,8 @@ export default class reminderForm extends Component {
         console.log(err);
       });
     return flag;
-  };
+  }; */
 
- 
   render() {
     return (
       <MaterialTable
@@ -90,7 +111,7 @@ export default class reminderForm extends Component {
             field: "end",
             type: "datetime",
             render: rowData => format(new Date(rowData.end), "dd MMMM HH:mm")
-          },
+          }, 
           {
             title: "City",
             field: "city",
@@ -103,9 +124,8 @@ export default class reminderForm extends Component {
             title: "Weather",
             field: "weather",
             sorting: false,
-
             render: rowData =>
-              `${rowData.weather.main} ${rowData.weather.description} `
+              `${rowData.weather}`
           },
           {
             title: "Color",
@@ -122,20 +142,19 @@ export default class reminderForm extends Component {
           }
         ]}
         editable={{
-          onRowAdd: newData => {
+          onRowAdd: newData => 
+         /*    let newDataf = [...newData.end = new Date(newData.end), newData.star = new Date(newData.end)]
+            console.debug("fotmarte", newDataf) */
             new Promise(resolve => {
               setTimeout(() => {
                 resolve();
-                const data = this.state.reminders;
+                const data = [...this.state.reminders];
                 data.push(newData);
-                this.setState( {reminders: data} );
+                this.setState({ reminders: data });
               }, 600);
-            });
-          },
-           onRowUpdate: (
-            newData,
-            oldData
-          ) =>
+            })
+          ,
+          onRowUpdate: (newData, oldData) =>
             new Promise(resolve => {
               setTimeout(() => {
                 resolve();
@@ -164,17 +183,15 @@ export default class reminderForm extends Component {
             color: "#ffffff"
           }),
           headerStyle: {
-            backgroundColor: '#2f74b5',
-            color: '#FFF'
-          }, 
+            backgroundColor: "#2f74b5",
+            color: "#FFF"
+          },
           titleStyle: {
-            alignContent: 'center',
-            backgroundColor: '#2f74b5',
-            color: '#FFF'
-
+            alignContent: "center",
+            backgroundColor: "#2f74b5",
+            color: "#FFF"
           }
         }}
-     
       ></MaterialTable>
     );
   }

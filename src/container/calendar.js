@@ -5,6 +5,7 @@ import { Container, TableRow, TableBody } from "@material-ui/core";
 import "./../App.css";
 import DayCell from "../components/dayCell";
 import ReminderForm from "../components/reminderForm";
+
 const reminders = [
   {
     start: "2019-09-01 00:00:00",
@@ -60,7 +61,7 @@ export default class calendar extends Component {
       currentMonth: new Date(),
       selectedDate: new Date(),
       open: false,
-      reminders:reminders
+      reminders: reminders
     };
   }
   nextMonth = () => {
@@ -73,14 +74,13 @@ export default class calendar extends Component {
       currentMonth: dateFns.subMonths(this.state.currentMonth, 1)
     });
   };
-  
 
   todayReminders = day => {
     const reminders = this.state.reminders;
     let todayReminders = reminders.filter(rem =>
       dateFns.isSameDay(dateFns.parseISO(rem.start), dateFns.parseISO(day))
     );
-  
+
     return todayReminders;
   };
 
@@ -99,6 +99,7 @@ export default class calendar extends Component {
       for (let i = 0; i < 7; i++) {
         days.push(
           <DayCell
+            key={day}
             props={{
               onDateClick: this.onDateClick,
               day: day,
@@ -126,12 +127,13 @@ export default class calendar extends Component {
             prevMonth: this.prevMonth
           }}
         />
-        <Container style={{ width: "fit-content" }}>
-          <TableBody style={{ flexGrow: 1 }}>{this.rendergrid()}</TableBody>
-          <ReminderForm reminders={this.state.reminders } />
 
+        <Container style={{ width: "fit-content" }}>
+          <table>
+            <TableBody style={{ flexGrow: 1 }}>{this.rendergrid()}</TableBody>
+          </table>
+          <ReminderForm reminders={this.state.reminders} />
         </Container>
-        
       </Container>
     );
   }
