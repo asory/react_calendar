@@ -14,7 +14,7 @@ const reminders = [
     city: "Santiago,Chile",
     text: "Call to every one",
     color: "#FF5722",
-    weather: {}
+    weather: { info: "moderate rain", clouds: "clear sky", temp: 11 }
   },
   {
     start: "2019-09-16 01:00:00",
@@ -23,7 +23,7 @@ const reminders = [
     city: " Santiago,Chile",
     text: "Call to every one",
     color: "#FFEB3B",
-    weather: {}
+    weather: { info: "moderate rain", clouds: "scattered clouds", temp: 29.33 }
   },
   {
     start: "2019-10-02 00:30:00",
@@ -32,7 +32,11 @@ const reminders = [
     city: " Barquisimeto,Venezuela ",
     text: "Call him",
     color: "#03A9F4",
-    weather: {}
+    weather: {
+      info: "clouds",
+      clouds: "overcast clouds",
+      temp: 21.15
+    }
   },
   {
     start: "2019-10-02 01:30:00",
@@ -41,7 +45,7 @@ const reminders = [
     city: "Merida,Venezuela",
     text: " Bring your gifts ",
     color: "#F44336",
-    weather: {}
+    weather: { info: "moderate rain", clouds: "broken clouds", temp: 23.32 }
   },
   {
     start: "2019-10-09 04:10:00",
@@ -50,7 +54,7 @@ const reminders = [
     city: "Tokyo,Japan",
     text: " ANIME RULES ",
     color: "03A9F4",
-    weather: {}
+    weather: { info: "clouds", clouds: "broken clouds", temp: 22.4 }
   }
 ];
 
@@ -61,9 +65,10 @@ export default class calendar extends Component {
       currentMonth: new Date(),
       selectedDate: new Date(),
       open: false,
-      reminders: reminders
+      reminders: reminders,
     };
   }
+
   nextMonth = () => {
     this.setState({
       currentMonth: dateFns.addMonths(this.state.currentMonth, 1)
@@ -80,7 +85,7 @@ export default class calendar extends Component {
     let todayReminders = reminders.filter(rem =>
       dateFns.isSameDay(dateFns.parseISO(rem.start), dateFns.parseISO(day))
     );
-
+    console.log("today remin", todayReminders);
     return todayReminders;
   };
 
@@ -103,8 +108,7 @@ export default class calendar extends Component {
             props={{
               onDateClick: this.onDateClick,
               day: day,
-              weather: "SOLEADO",
-              reminders: this.todayReminders(day).length,
+              reminders: this.todayReminders,
               monthStart: monthStart
             }}
           />
@@ -124,7 +128,8 @@ export default class calendar extends Component {
           props={{
             currentMonth: dateFns.format(this.state.currentMonth, "MMMM yyyy"),
             nextMonth: this.nextMonth,
-            prevMonth: this.prevMonth
+            prevMonth: this.prevMonth,
+            city:this.changeDefaultCity
           }}
         />
 

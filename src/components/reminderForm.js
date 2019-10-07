@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import MaterialTable from "material-table";
-import axios from "axios";
 import SwapVert from "@material-ui/icons/SwapVert";
 import Clear from "@material-ui/icons/Clear";
 import FilterList from "@material-ui/icons/FilterList";
@@ -23,80 +22,17 @@ export default class reminderForm extends Component {
     };
   }
 
-  CancelToken = axios.CancelToken;
-  source = this.CancelToken.source();
-  abortController = new AbortController();
-
   componentDidMount() {
     this.setState({ reminders: this.props.reminders });
-    /*     this.loadData();
-     */
+    
   }
- /* 
-  componentWillUnmount() {
-    this.source.cancel("Operation canceled by the user.");
-  }
-
- 
-  loadData = () => {
-    this.props.reminders.map(e => {
-      let weather = this.getWeather(e.city);
-      this.setState({ reminders: weather });
-      return console.log("loadata", e.city);
-    });
-  }; */
-
-  /* getWeather = city => {
-    let c = `${city.split(",")[0]}`;
-    let weather = "";
-    console.log(c);
-    axios
-      .get("api.openweathermap.org/data/2.5/weather", {
-        q: c,
-        appid: "469d1adb2769408051227ecab599bde7",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        },{
-        cancelToken: this.source.token
-      }
-      })
-      .then(response => {
-        console.log("response", response);
-
-        weather = response;
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    console.log(weather);
-    return weather;
-  };
-
-  getflag = (country, style = "shiny", size = 24) => {
-    // styles flat and shiny, sizez 64 48 32 24 16
-    let flag;
-    axios
-      .get(`https://www.countryflags.io/${country}/${style}/${size}.png`, {
-        header: {
-          "Access-Control-Allow-Origin": "*",
-          crossorigin: true
-        }
-      })
-      .then(response => {
-        flag = response;
-        console.log("flag", flag);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    return flag;
-  }; */
 
   render() {
     return (
       <MaterialTable
         icons={tableIcons}
         title={`${"    Reminders         "}`}
+        data={this.state.reminders}
         columns={[
           { title: "Title", field: "title", sorting: false },
           { title: "Description", field: "text", sorting: false },
@@ -111,26 +47,24 @@ export default class reminderForm extends Component {
             field: "end",
             type: "datetime",
             render: rowData => format(new Date(rowData.end), "dd MMMM HH:mm")
-          }, 
+          },
           {
             title: "City",
             field: "city",
-            render: rowData =>
-              /*  ${this.getflag(rowData.city.split(",")[1])} */ `${
-                rowData.city.split(",")[0]
-              } `
+            render: rowData => 
+              `${rowData.city.split(",")[0]}`
+            
           },
           {
             title: "Weather",
             field: "weather",
             sorting: false,
-            render: rowData =>
-              `${rowData.weather}`
+            render: rowData => (rowData.weather===undefined)? "unavalaible": `${rowData.weather.temp}º - ${rowData.weather.info}`
           },
           {
             title: "Color",
             field: "color",
-            sorting: false,
+            sorting: true,
             lookup: {
               "#03A9F4": "blue",
               "#FFEB3B": "yellow",
@@ -141,19 +75,18 @@ export default class reminderForm extends Component {
             }
           }
         ]}
+
         editable={{
-          onRowAdd: newData => 
-         /*    let newDataf = [...newData.end = new Date(newData.end), newData.star = new Date(newData.end)]
-            console.debug("fotmarte", newDataf) */
+          onRowAdd: newData =>
             new Promise(resolve => {
               setTimeout(() => {
                 resolve();
                 const data = [...this.state.reminders];
+               
                 data.push(newData);
                 this.setState({ reminders: data });
               }, 600);
-            })
-          ,
+            }),
           onRowUpdate: (newData, oldData) =>
             new Promise(resolve => {
               setTimeout(() => {
@@ -173,11 +106,11 @@ export default class reminderForm extends Component {
               }, 600);
             })
         }}
-        data={this.state.reminders}
         options={{
           paging: false,
           draggable: false,
           search: false,
+          addRowPosition:"first",
           rowStyle: rowData => ({
             backgroundColor: `${rowData.color}`,
             color: "#ffffff"
