@@ -5,7 +5,7 @@ import { Container, TableRow, TableBody } from "@material-ui/core";
 import "./../App.css";
 import DayCell from "../components/dayCell";
 import ReminderForm from "../components/reminderForm";
-
+import data from "../data"
 const reminders = [
   {
     start: "2019-09-01 00:00:00",
@@ -68,7 +68,9 @@ export default class calendar extends Component {
       reminders: reminders,
     };
   }
-
+  componentDidMount() {
+    data("New York")
+  }
   nextMonth = () => {
     this.setState({
       currentMonth: dateFns.addMonths(this.state.currentMonth, 1)
